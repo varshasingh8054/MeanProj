@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/login']);
        
       } else {
-        console.log("cry");
+        alert("username oa email duplicate");
         //this.flashMessage.show('Something went wrong', {cssClass: 'alert-danger', timeout: 3000});
         console.log("Something went wrong");
         this.router.navigate(['/register']);
