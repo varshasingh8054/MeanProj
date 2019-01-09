@@ -14,5 +14,7 @@ In  MeanProj-master\MeanProj-master\angular-src--> $ npm install -g @angular/cli
 
 In  MeanProj-master\MeanProj-master\angular-src--> $ npm start
 
+run http://localhost:4200/
+
 
 
