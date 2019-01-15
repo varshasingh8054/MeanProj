@@ -43,7 +43,7 @@ require('./config/passport')(passport);
 app.use('/user', users);
 
 // app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'public/index.html'));
+//   res.sendFile(path.join(__dirname, 'angular-src/src/app/index.html'));
 // });
 
 

@@ -28,12 +28,36 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  forgotpasswordUser(user) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/user/forgotpassword', user, {headers: headers})
+      .map(res => res.json());
+  }
+
+  resetPasswordUser(user)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/user/updatePassword', user, {headers: headers})
+      .map(res => res.json());
+  }
+
   getProfile() {
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
     return this.http.get('user/profile', {headers: headers})
+      .map(res => res.json());
+  }
+
+
+  updatePasswordUser(user)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/user/updatepassword', user, {headers: headers})
       .map(res => res.json());
   }
 

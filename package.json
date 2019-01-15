@@ -5,17 +5,22 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app"
+    "start": "nodemon app.js"
   },
   "dependencies": {
-    "express": "*",
-    "mongoose": "*",
     "bcryptjs": "*",
-    "cors": "*",
-    "jsonwebtoken": "*",
     "body-parser": "*",
+    "cors": "*",
+    "crypto": "^1.0.1",
+    "dotenv": "^6.2.0",
+    "express": "*",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "*",
+    "nodemailer": "^5.1.1",
+    "nodemon": "^1.18.9",
     "passport": "*",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "sequelize": "^4.42.0"
   },
   "author": "varsha",
   "license": "ISC"

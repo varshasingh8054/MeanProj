@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
           alert("You are logged in");
           this.router.navigate(['dashboard']);
         } else {
-         alert("You are logged out");
+         alert("Confirm Your Account First or User does not exist");
           this.router.navigate(['login']);
         }
     });

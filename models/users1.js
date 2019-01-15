@@ -19,7 +19,13 @@ const UserSchema = mongoose.Schema({
     password :{
         type: String,
         required : true
-    } 
+    } ,
+    active: {
+        type: Boolean,
+        defaultValue: false,
+        required : true
+    },
+    token: String
         
 });
 
@@ -46,6 +52,8 @@ module.exports.addUser= function(newUser, callback)
             newUser.save(callback);
         });
     } );
+ 
+    console.log(newUser.active);
 }
 
 

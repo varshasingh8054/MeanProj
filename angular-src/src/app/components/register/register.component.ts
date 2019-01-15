@@ -54,8 +54,8 @@ export class RegisterComponent implements OnInit {
       if(data.success) {
         
         //this.flashMessage.show('You are now registered and can now login', {cssClass: 'alert-success', timeout: 3000});
-        alert("You are now registered and can now login");
-        this.router.navigate(['/login']);
+        alert("!! registered, confirm your email for login");
+       // this.router.navigate(['/login']);
        
       } else {
         alert("username or email duplicate");
