@@ -24,7 +24,7 @@ const port=3000;
 
 app.get("/" , (req,res) =>
 {
-    res.send("Anything");
+    res.send("Invalid Endpoint");
 });
 
 
