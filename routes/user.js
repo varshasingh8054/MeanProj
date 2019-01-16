@@ -118,11 +118,11 @@ router.post('/authenticate', (req,res,next) => {
   User.getUserByUsername(username, (err, user) => {
     if(err) throw err;
     if(!user) {
-      return res.json({success: false, msg: 'User not found'});
+      return res.json({success: false, msg: 'User not found, Please register first'});
     }
     if(!user.active)
     {
-      return res.json({success: false, msg: 'User not active'});
+      return res.json({success: false, msg: 'User not active, Confirm your account from your mail'});
     }
     User.comparePassword(password, user.password,(err, isMatch) => {
       if(err) throw err;
@@ -153,6 +153,7 @@ router.post('/authenticate', (req,res,next) => {
 router.post('/forgotpassword', (req, res) => {
   if (req.body.email === '') {
     res.json('email required');
+    //res.json({success: false, msg: 'email required'});
   }
   console.log(req.body.email);
   User.findOne({
@@ -161,7 +162,9 @@ router.post('/forgotpassword', (req, res) => {
   .then(user => {
     if (user === null) {
       console.log('email not in database');
+     
       res.json('email not in db');
+      //res.json({success: false, msg: 'email required'});
     } 
     else {
       const token = crypto.randomBytes(20).toString('hex');
@@ -197,6 +200,7 @@ router.post('/forgotpassword', (req, res) => {
           transporter.sendMail(mailOptions, function(err, response) {
               if (err) {
                 console.error('there was an error: ', err);
+
               } else {
                 console.log('here is the res: ', response);
                 res.status(200).json('recovery email sent');
@@ -218,7 +222,7 @@ router.get('/reset/:token/:email', (req, res, next) => {
   }).then(user => {
       if(Date.now() > user.resetPasswordExpires)
       {
-          res.send("Reset Link Expired");
+          res.send("Reset Link Has Expired");
       }
       else{
           if(user.resetPasswordToken === req.params.token)

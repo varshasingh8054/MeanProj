@@ -1,6 +1,7 @@
 import { Component, OnInit, ResolvedReflectiveFactory } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -12,7 +13,8 @@ export class ForgotpasswordComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private flashMessage: FlashMessagesService
 
   ) { }
 
@@ -21,21 +23,17 @@ export class ForgotpasswordComponent implements OnInit {
 
   onforgotpasswordSubmit()
   {
-    
-   
       const user = {
-        email: this.email
-       
+        email: this.email  
       }
-
-  
       this.authService.forgotpasswordUser(user).subscribe(data => {
           if(data.success) {
-          console.log("reset password");
-          alert("reset password");
-          } else {
-         
+            this.flashMessage.show(data.msg, {cssClass: 'alert-success', timeout: 2000});
             this.router.navigate(['login']);
+           
+          } else {
+            this.flashMessage.show('fill your correct email first', {cssClass: 'alert-success', timeout: 2000});
+            this.router.navigate(['forgotpassword']);
           }
       });
     }
