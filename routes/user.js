@@ -7,19 +7,27 @@ const config= require('../config/database');
 const nodemailer=require('nodemailer');
 const crypto=require('crypto');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./mylocalStor');
+}
 
 router.post('/register', (req,res,next) => {
   const token = crypto.randomBytes(20).toString('hex');
-  
+  const today=new Date();
     let newUser = new User ({
         name: req.body.name,
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
         token:token,
-        active: false
+        active: false,
+        resetPasswordToken: '',
+        resetPasswordExpires: '',
+        created: today
     });
 
   
@@ -158,10 +166,10 @@ router.post('/forgotpassword', (req, res) => {
     else {
       const token = crypto.randomBytes(20).toString('hex');
 
-      user.update({
-          resetPasswordToken: token,
-          resetPasswordExpires: Date.now() + 360000,
-        });
+
+          user.resetPasswordToken = token,
+          user.resetPasswordExpires=Date.now() + 360000;
+          user.save();
 
               const output = `
               <p>Click <a href="http://localhost:3000/user/reset/${token}/${req.body.email}">here</a> to reset password.</p>
@@ -201,19 +209,37 @@ router.post('/forgotpassword', (req, res) => {
   })
 });
 
+
+
 router.get('/reset/:token/:email', (req, res, next) => {
+
   User.findOne({
-      resetPasswordToken: req.body.token,
-      
+      email: req.params.email,
   }).then(user => {
-    if (user == null) {
-      console.log('password reset link is invalid or has expired');
-      res.json('password reset link is invalid or has expired');
-    } else {
-      res.sendFile(path.join(__dirname, '../reset', 'reset.html'));
-    }
-  });
-} );
+      if(Date.now() > user.resetPasswordExpires)
+      {
+          res.send("Reset Link Expired");
+      }
+      else{
+          if(user.resetPasswordToken === req.params.token)
+          {
+        
+            localStorage.setItem('email1',req.params.email);
+            res.sendFile(path.join(__dirname, '../reset', 'reset.html'));
+                   
+          }
+          else{
+              res.send("error");
+          }
+      }
+  })
+});
+
+//reset confirmation ends
+
+//confirmation email
+
+
 
 
 
@@ -222,26 +248,27 @@ router.get('/reset/:token/:email', (req, res, next) => {
 
 //update password
 
-router.put('/updatePassword', (req, res, next) => {
+
+router.put('/updatepassword', (req, res, next) => {
+  var email1 =  localStorage.getItem('email1');; 
   User.findOne({
-      email: req.body.email,
+      email: email1
   }).then(user => {
     if (user != null) {
       console.log('user exists in db');
-      bcrypt
-        .hash(req.body.password, BCRYPT_SALT_ROUNDS)
-        .then(hashedPassword => {
-          user.update({
-            password: hashedPassword,
-            resetPasswordToken: null,
-            resetPasswordExpires: null,
-          });
-        })
-        .then(() => {
-          console.log('password updated');
-          res.status(200).send({ message: 'password updated' });
+      bcrypt.genSalt(10, (err, salt)  =>  {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+            if(err) throw err;
+            console.log(hash)
+            user.password = hash;
+            user.resetPasswordToken = null;
+            user.resetPasswordExpires = null;
+            res.json({success: true, msg: 'password updated'});
+            user.save();
         });
-    } else {
+    });
+  }
+     else {
       console.log('no user exists in db to update');
       res.status(404).json('no user exists in db to update');
     }

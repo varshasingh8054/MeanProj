@@ -20,7 +20,7 @@ import { AuthGuard } from './guards/auth.guard';
 
 import { VerifiedComponent } from './components/verified/verified.component';
 import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
 
 
 const appRoutes: Routes =  [
@@ -31,6 +31,7 @@ const appRoutes: Routes =  [
   {path:'dashboard', component: DashboardComponent , canActivate:[AuthGuard]},
   {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
   {path:'forgotpassword', component: ForgotpasswordComponent},
+  {path:'resetpassword', component: ResetpasswordComponent}
   
 ]
 
@@ -45,7 +46,7 @@ const appRoutes: Routes =  [
     RegisterComponent,
     VerifiedComponent,
     ForgotpasswordComponent,
-    ResetPasswordComponent
+    ResetpasswordComponent
 
   ],
   imports: [

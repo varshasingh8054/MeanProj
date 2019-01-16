@@ -39,7 +39,7 @@ export class AuthService {
   {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/user/updatePassword', user, {headers: headers})
+    return this.http.put('http://localhost:3000/user/updatePassword', user, {headers: headers})
       .map(res => res.json());
   }
 
@@ -52,14 +52,6 @@ export class AuthService {
       .map(res => res.json());
   }
 
-
-  updatePasswordUser(user)
-  {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/user/updatepassword', user, {headers: headers})
-      .map(res => res.json());
-  }
 
   storeUserData(token, user) {
     localStorage.setItem('id_token', token);

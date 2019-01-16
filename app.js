@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const users = require('./routes/user');
 const config = require('./config/database');
 
+
 const app=express();
 
 mongoose.connect(config.database);
