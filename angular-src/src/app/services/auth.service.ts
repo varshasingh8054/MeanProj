@@ -43,13 +43,22 @@ export class AuthService {
       .map(res => res.json());
   }
 
-  getProfile() {
+ getProfile() {
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('user/profile', {headers: headers})
+      let ep = this.prepEndpoint('user/profile');
+       return this.http.get(ep,{headers: headers})
       .map(res => res.json());
+  }
+  
+  prepEndpoint(ep){
+    if(this.isDev){
+      return ep;
+    } else {
+      return 'http://localhost:3000/'+ep;
+    }
   }
 
 
@@ -74,4 +83,6 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
   }
+  
+  
 }
