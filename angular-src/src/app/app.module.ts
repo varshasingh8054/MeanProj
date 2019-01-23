@@ -18,6 +18,7 @@ import { ValidateService } from './services/validate.service';
 import { FlashMessagesModule } from 'angular2-flash-messages/module';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard1 } from './guards/auth.guard1';
 
 import { VerifiedComponent } from './components/verified/verified.component';
 import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
@@ -25,14 +26,14 @@ import { ResetpasswordComponent } from './components/resetpassword/resetpassword
 
 
 const appRoutes: Routes =  [
-  {path:'', component: HomeComponent},
+ {path:'', component: HomeComponent},
   //{path:'home', component: HomeComponent},
-  {path:'register', component: RegisterComponent},
+  {path:'register', component: RegisterComponent,canActivate:[AuthGuard1]},
   {path:'login', component: LoginComponent},
   {path:'dashboard', component: DashboardComponent , canActivate:[AuthGuard]},
   {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-  {path:'forgotpassword', component: ForgotpasswordComponent},
-  {path:'resetpassword', component: ResetpasswordComponent}
+  {path:'forgotpassword', component: ForgotpasswordComponent, canActivate:[AuthGuard1]},
+  {path:'resetpassword', component: ResetpasswordComponent, canActivate:[AuthGuard1]}
   
 ]
 
@@ -57,7 +58,7 @@ const appRoutes: Routes =  [
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule
   ],
-  providers: [ValidateService, AuthService, AuthGuard],
+  providers: [ValidateService, AuthService, AuthGuard, AuthGuard1],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
